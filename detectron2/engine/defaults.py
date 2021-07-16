@@ -282,7 +282,9 @@ class DefaultPredictor:
 
     def __init__(self, cfg):
         self.cfg = cfg.clone()  # cfg can be modified by model
+        self.cfg.MODEL.RESNETS.NORM = "BN"
         self.model = build_model(self.cfg)
+        
         self.model.eval()
         if len(cfg.DATASETS.TEST):
             self.metadata = MetadataCatalog.get(cfg.DATASETS.TEST[0])

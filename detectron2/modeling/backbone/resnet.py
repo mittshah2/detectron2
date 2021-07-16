@@ -53,7 +53,7 @@ class BasicBlock(CNNBlockBase):
                 kernel_size=1,
                 stride=stride,
                 bias=False,
-                norm=get_norm(norm, out_channels),
+                norm=get_norm("BN", out_channels),
             )
         else:
             self.shortcut = None
@@ -65,7 +65,7 @@ class BasicBlock(CNNBlockBase):
             stride=stride,
             padding=1,
             bias=False,
-            norm=get_norm(norm, out_channels),
+            norm=get_norm("BN", out_channels),
         )
 
         self.conv2 = Conv2d(
@@ -75,7 +75,7 @@ class BasicBlock(CNNBlockBase):
             stride=1,
             padding=1,
             bias=False,
-            norm=get_norm(norm, out_channels),
+            norm=get_norm("BN", out_channels),
         )
 
         for layer in [self.conv1, self.conv2, self.shortcut]:
@@ -136,7 +136,7 @@ class BottleneckBlock(CNNBlockBase):
                 kernel_size=1,
                 stride=stride,
                 bias=False,
-                norm=get_norm(norm, out_channels),
+                norm=get_norm("BN", out_channels),
             )
         else:
             self.shortcut = None
@@ -152,7 +152,7 @@ class BottleneckBlock(CNNBlockBase):
             kernel_size=1,
             stride=stride_1x1,
             bias=False,
-            norm=get_norm(norm, bottleneck_channels),
+            norm=get_norm("BN", bottleneck_channels),
         )
 
         self.conv2 = Conv2d(
@@ -164,7 +164,7 @@ class BottleneckBlock(CNNBlockBase):
             bias=False,
             groups=num_groups,
             dilation=dilation,
-            norm=get_norm(norm, bottleneck_channels),
+            norm=get_norm("BN", bottleneck_channels),
         )
 
         self.conv3 = Conv2d(
@@ -172,7 +172,7 @@ class BottleneckBlock(CNNBlockBase):
             out_channels,
             kernel_size=1,
             bias=False,
-            norm=get_norm(norm, out_channels),
+            norm=get_norm("BN", out_channels),
         )
 
         for layer in [self.conv1, self.conv2, self.conv3, self.shortcut]:
@@ -240,7 +240,7 @@ class DeformBottleneckBlock(CNNBlockBase):
                 kernel_size=1,
                 stride=stride,
                 bias=False,
-                norm=get_norm(norm, out_channels),
+                norm=get_norm("BN", out_channels),
             )
         else:
             self.shortcut = None
@@ -253,7 +253,7 @@ class DeformBottleneckBlock(CNNBlockBase):
             kernel_size=1,
             stride=stride_1x1,
             bias=False,
-            norm=get_norm(norm, bottleneck_channels),
+            norm=get_norm("BN", bottleneck_channels),
         )
 
         if deform_modulated:
@@ -282,7 +282,7 @@ class DeformBottleneckBlock(CNNBlockBase):
             groups=num_groups,
             dilation=dilation,
             deformable_groups=deform_num_groups,
-            norm=get_norm(norm, bottleneck_channels),
+            norm=get_norm("BN", bottleneck_channels),
         )
 
         self.conv3 = Conv2d(
@@ -290,7 +290,7 @@ class DeformBottleneckBlock(CNNBlockBase):
             out_channels,
             kernel_size=1,
             bias=False,
-            norm=get_norm(norm, out_channels),
+            norm=get_norm("BN", out_channels),
         )
 
         for layer in [self.conv1, self.conv2, self.conv3, self.shortcut]:
@@ -619,7 +619,7 @@ def build_resnet_backbone(cfg, input_shape):
         ResNet: a :class:`ResNet` instance.
     """
     # need registration of new blocks/stems?
-    norm = cfg.MODEL.RESNETS.NORM
+    norm = "BN"
     stem = BasicStem(
         in_channels=input_shape.channels,
         out_channels=cfg.MODEL.RESNETS.STEM_OUT_CHANNELS,
@@ -670,7 +670,7 @@ def build_resnet_backbone(cfg, input_shape):
             "stride_per_block": [first_stride] + [1] * (num_blocks_per_stage[idx] - 1),
             "in_channels": in_channels,
             "out_channels": out_channels,
-            "norm": norm,
+            "norm": "BN",
         }
         # Use BasicBlock for R18 and R34.
         if depth in [18, 34]:
