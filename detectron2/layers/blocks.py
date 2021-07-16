@@ -51,7 +51,7 @@ class CNNBlockBase(nn.Module):
         """
         for p in self.parameters():
             p.requires_grad = False
-        FrozenBatchNorm2d.convert_frozen_batchnorm(self)
+        # FrozenBatchNorm2d.convert_frozen_batchnorm(self)
         return self
 
 
