@@ -348,7 +348,7 @@ class BasicStem(CNNBlockBase):
             stride=2,
             padding=3,
             bias=False,
-            norm=get_norm(norm, out_channels),
+            norm=get_norm("BN", out_channels),
         )
         weight_init.c2_msra_fill(self.conv1)
 
@@ -623,7 +623,7 @@ def build_resnet_backbone(cfg, input_shape):
     stem = BasicStem(
         in_channels=input_shape.channels,
         out_channels=cfg.MODEL.RESNETS.STEM_OUT_CHANNELS,
-        norm=norm,
+        norm="BN",
     )
 
     # fmt: off
