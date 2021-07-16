@@ -60,7 +60,7 @@ class FrozenBatchNorm2d(nn.Module):
                 self.running_var,
                 self.weight,
                 self.bias,
-                training=False,
+                training=True,
                 eps=self.eps,
             )
 
@@ -137,8 +137,8 @@ def get_norm(norm, out_channels):
             "BN": BatchNorm2d,
             # Fixed in https://github.com/pytorch/pytorch/pull/36382
             "SyncBN": NaiveSyncBatchNorm if env.TORCH_VERSION <= (1, 5) else nn.SyncBatchNorm,
-            "FrozenBN": FrozenBatchNorm2d,
-            "GN": lambda channels: nn.GroupNorm(32, channels),
+            "FrozenBN": BatchNorm2d,
+            "GN": BatchNorm2d,
             # for debugging:
             "nnSyncBN": nn.SyncBatchNorm,
             "naiveSyncBN": NaiveSyncBatchNorm,
