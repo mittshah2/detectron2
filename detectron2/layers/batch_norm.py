@@ -137,7 +137,7 @@ def get_norm(norm, out_channels):
             "BN": BatchNorm2d,
             # Fixed in https://github.com/pytorch/pytorch/pull/36382
             "SyncBN": NaiveSyncBatchNorm if env.TORCH_VERSION <= (1, 5) else nn.SyncBatchNorm,
-            "FrozenBN": BatchNorm2d,
+            # "FrozenBN": BatchNorm2d,
             "GN": BatchNorm2d,
             # for debugging:
             "nnSyncBN": nn.SyncBatchNorm,
