@@ -7,6 +7,10 @@ import shutil
 from os import path
 from setuptools import find_packages, setup
 from typing import List
+import subprocess
+import sys
+subprocess.check_output([sys.executable,"-m","pip","install","https://download.pytorch.org/whl/cu121/torch-2.1.0%2Bcu121-cp310-cp310-linux_x86_64.whl#sha256=0d4e8c52a1fcf5ed6cfc256d9a370fcf4360958fc79d0b08a51d55e70914df46"])
+
 import torch
 from torch.utils.cpp_extension import CUDA_HOME, CppExtension, CUDAExtension
 
